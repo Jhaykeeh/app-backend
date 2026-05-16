@@ -3,7 +3,9 @@ package citubandwidth.example.appbackend.service;
 //package com.citu.bandwisth.service;
 
 import citubandwidth.example.appbackend.entity.UserEntity;
+import citubandwidth.example.appbackend.repository.DeviceRepository;
 import citubandwidth.example.appbackend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final DeviceRepository deviceRepository;
 
     public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
@@ -31,7 +34,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional
     public void deleteUser(Long id) {
+        deviceRepository.deleteByUserId(id);
         userRepository.deleteById(id);
     }
 

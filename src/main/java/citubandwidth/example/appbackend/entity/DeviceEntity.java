@@ -34,6 +34,10 @@ public class DeviceEntity {
     @Column(name = "ip_address", length = 45)
     private String ipAddress;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "approval_status", nullable = false)
+    private DeviceStatus approvalStatus = DeviceStatus.APPROVED;
+
     @Column(name = "is_active")
     private boolean isActive = true;
 
@@ -52,5 +56,9 @@ public class DeviceEntity {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    public enum DeviceStatus {
+        APPROVED, PENDING, REJECTED
     }
 }
