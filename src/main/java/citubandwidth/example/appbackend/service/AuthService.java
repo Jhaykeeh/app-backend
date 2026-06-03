@@ -32,6 +32,8 @@ public class AuthService {
         user.setSchoolId(request.getSchoolId());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setEmail(request.getEmail());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
         user.setDeviceBrand(request.getDeviceBrand());
         user.setDeviceModel(request.getDeviceModel());
         user.setRole(UserEntity.Role.USER);
@@ -46,7 +48,9 @@ public class AuthService {
                 savedUser.getSchoolId(),
                 savedUser.getEmail(),
                 savedUser.getRole().toString(),
-                savedUser.getId()
+                savedUser.getId(),
+                savedUser.getFirstName(),
+                savedUser.getLastName()
         );
     }
 
@@ -70,7 +74,9 @@ public class AuthService {
                 user.getSchoolId(),
                 user.getEmail(),
                 user.getRole().toString(),
-                user.getId()
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName()
         );
     }
 }

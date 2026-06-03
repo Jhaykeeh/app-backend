@@ -15,4 +15,6 @@ public class AuthResponse {
     private String email;
     private String role;
     private Long userId;
+    private String firstName;
+    private String lastName;
 }
