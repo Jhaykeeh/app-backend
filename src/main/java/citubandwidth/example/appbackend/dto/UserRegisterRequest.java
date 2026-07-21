@@ -1,7 +1,5 @@
 package citubandwidth.example.appbackend.dto;
 
-//package com.citu.bandwisth.dto;
-
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Email;
@@ -23,7 +21,4 @@ public class UserRegisterRequest {
 
     @NotBlank(message = "Last name is required")
     private String lastName;
-
-    private String deviceBrand;
-    private String deviceModel;
 }

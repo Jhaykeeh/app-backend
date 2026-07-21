@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserEntity {
 
+    // ── Identity ───────────────────────────────────────────
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,17 +23,13 @@ public class UserEntity {
     @Column(name = "school_id", unique = true, nullable = false, length = 20)
     private String schoolId;
 
-    @Column(nullable = false)
-    private String password;
-
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
-    @Column(name = "first_name", length = 50)
-    private String firstName;
+    // ── Authentication & Authorization ─────────────────────
 
-    @Column(name = "last_name", length = 50)
-    private String lastName;
+    @Column(nullable = false)
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -41,11 +39,15 @@ public class UserEntity {
     @Column(nullable = false)
     private Status status = Status.ACTIVE;
 
-    @Column(name = "device_brand", length = 50)
-    private String deviceBrand;
+    // ── Personal Information ───────────────────────────────
 
-    @Column(name = "device_model", length = 50)
-    private String deviceModel;
+    @Column(name = "first_name", length = 50)
+    private String firstName;
+
+    @Column(name = "last_name", length = 50)
+    private String lastName;
+
+    // ── Academic (optional, updated via profile) ───────────
 
     @Column(length = 100)
     private String course;
@@ -54,8 +56,12 @@ public class UserEntity {
     @JsonProperty("year")
     private String yearLevel;
 
+    // ── Contact (optional, updated via profile) ────────────
+
     @Column(name = "contact_number", length = 20)
     private String contactNumber;
+
+    // ── Timestamps ─────────────────────────────────────────
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -73,6 +79,8 @@ public class UserEntity {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    // ── Enums ──────────────────────────────────────────────
 
     public enum Role {
         USER, ADMIN

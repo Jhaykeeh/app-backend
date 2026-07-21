@@ -34,8 +34,6 @@ public class AuthService {
         user.setEmail(request.getEmail());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-        user.setDeviceBrand(request.getDeviceBrand());
-        user.setDeviceModel(request.getDeviceModel());
         user.setRole(UserEntity.Role.USER);
         user.setStatus(UserEntity.Status.ACTIVE);
 
@@ -43,15 +41,7 @@ public class AuthService {
 
         String token = jwtUtil.generateToken(savedUser.getSchoolId());
 
-        return new AuthResponse(
-                token,
-                savedUser.getSchoolId(),
-                savedUser.getEmail(),
-                savedUser.getRole().toString(),
-                savedUser.getId(),
-                savedUser.getFirstName(),
-                savedUser.getLastName()
-        );
+        return buildAuthResponse(token, savedUser);
     }
 
     public AuthResponse login(AuthRequest request) {
@@ -69,6 +59,10 @@ public class AuthService {
 
         String token = jwtUtil.generateToken(user.getSchoolId());
 
+        return buildAuthResponse(token, user);
+    }
+
+    private AuthResponse buildAuthResponse(String token, UserEntity user) {
         return new AuthResponse(
                 token,
                 user.getSchoolId(),

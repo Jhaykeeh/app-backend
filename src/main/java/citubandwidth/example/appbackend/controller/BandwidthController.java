@@ -1,11 +1,16 @@
 package citubandwidth.example.appbackend.controller;
 
-//package com.citu.bandwisth.controller;
-
 import citubandwidth.example.appbackend.entity.BandwidthUsageEntity;
+import citubandwidth.example.appbackend.entity.UserEntity;
+import citubandwidth.example.appbackend.repository.BandwidthUsageRepository;
+import citubandwidth.example.appbackend.repository.UserRepository;
 import citubandwidth.example.appbackend.service.BandwidthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,39 +22,47 @@ import java.util.List;
 public class BandwidthController {
 
     private final BandwidthService bandwidthService;
+    private final UserRepository userRepository;
+    private final BandwidthUsageRepository bandwidthUsageRepository;
+
+    private Long getCurrentUserId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String schoolId = auth.getName();
+        UserEntity user = userRepository.findBySchoolId(schoolId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getId();
+    }
 
     @PostMapping("/log")
     public ResponseEntity<BandwidthUsageEntity> logUsage(@RequestBody BandwidthUsageEntity usage) {
-        // Get userId and deviceId from authentication
-        Long userId = 1L;
-        Long deviceId = 1L;
-        return ResponseEntity.ok(bandwidthService.logUsage(userId, deviceId,
+        Long userId = getCurrentUserId();
+        return ResponseEntity.ok(bandwidthService.logUsage(userId, usage.getDeviceId(),
                 usage.getUsageAmount(), usage.getUnit()));
     }
 
     @GetMapping("/user")
     public ResponseEntity<List<BandwidthUsageEntity>> getUserUsage() {
-        Long userId = 1L; // Replace with actual user ID from token
+        Long userId = getCurrentUserId();
         return ResponseEntity.ok(bandwidthService.getUserUsage(userId));
     }
 
     @GetMapping("/user/total")
     public ResponseEntity<Double> getTotalUsage() {
-        Long userId = 1L; // Replace with actual user ID from token
+        Long userId = getCurrentUserId();
         return ResponseEntity.ok(bandwidthService.getTotalUsage(userId));
     }
 
     @GetMapping("/user/range")
     public ResponseEntity<Double> getUsageInRange(
-            @RequestParam LocalDateTime start,
-            @RequestParam LocalDateTime end) {
-        Long userId = 1L; // Replace with actual user ID from token
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+        Long userId = getCurrentUserId();
         return ResponseEntity.ok(bandwidthService.getUsageBetween(userId, start, end));
     }
 
     @GetMapping("/admin/all")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<BandwidthUsageEntity>> getAllUsage() {
-        // Admin endpoint - return all usage
-        return ResponseEntity.ok(bandwidthService.getUserUsage(1L)); // Replace with logic for all
+        return ResponseEntity.ok(bandwidthUsageRepository.findAll());
     }
 }
