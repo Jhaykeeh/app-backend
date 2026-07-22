@@ -12,5 +12,4 @@ public class DeviceRequest {
 
     @NotBlank(message = "Model is required")
     private String model;
-    private String macAddress;
 }

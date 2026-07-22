@@ -1,7 +1,5 @@
 package citubandwidth.example.appbackend.service;
 
-//package com.citu.bandwisth.service;
-
 import citubandwidth.example.appbackend.entity.UserEntity;
 import citubandwidth.example.appbackend.repository.DeviceRepository;
 import citubandwidth.example.appbackend.repository.UserRepository;
@@ -40,17 +38,10 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public UserEntity disableUser(Long id) {
+    public UserEntity promoteToAdmin(Long id) {
         UserEntity user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        user.setStatus(UserEntity.Status.DISABLED);
-        return userRepository.save(user);
-    }
-
-    public UserEntity enableUser(Long id) {
-        UserEntity user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        user.setStatus(UserEntity.Status.ACTIVE);
+        user.setRole(UserEntity.Role.ADMIN);
         return userRepository.save(user);
     }
 }

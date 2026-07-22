@@ -35,7 +35,6 @@ public class AuthService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setRole(UserEntity.Role.USER);
-        user.setStatus(UserEntity.Status.ACTIVE);
 
         UserEntity savedUser = userRepository.save(user);
 
@@ -51,10 +50,6 @@ public class AuthService {
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid school ID or password");
-        }
-
-        if (user.getStatus() == UserEntity.Status.DISABLED) {
-            throw new RuntimeException("Account is disabled. Contact admin.");
         }
 
         String token = jwtUtil.generateToken(user.getSchoolId());

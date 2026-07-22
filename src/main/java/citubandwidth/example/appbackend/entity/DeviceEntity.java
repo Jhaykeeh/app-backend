@@ -28,12 +28,6 @@ public class DeviceEntity {
     @Column(nullable = false, length = 50)
     private String model;
 
-    @Column(name = "mac_address", length = 17)
-    private String macAddress;
-
-    @Column(name = "ip_address", length = 45)
-    private String ipAddress;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "approval_status", nullable = false)
     private DeviceStatus approvalStatus = DeviceStatus.APPROVED;

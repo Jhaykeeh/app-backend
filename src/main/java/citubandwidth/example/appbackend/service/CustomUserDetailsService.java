@@ -1,7 +1,5 @@
 package citubandwidth.example.appbackend.service;
 
-//package com.citu.bandwisth.security;
-
 import citubandwidth.example.appbackend.entity.UserEntity;
 import citubandwidth.example.appbackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

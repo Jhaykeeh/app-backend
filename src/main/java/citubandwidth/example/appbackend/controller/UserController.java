@@ -1,7 +1,5 @@
 package citubandwidth.example.appbackend.controller;
 
-//package com.citu.bandwisth.controller;
-
 import citubandwidth.example.appbackend.entity.UserEntity;
 import citubandwidth.example.appbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +33,6 @@ public class UserController {
         if (updatedUser.getFirstName() != null) existing.setFirstName(updatedUser.getFirstName());
         if (updatedUser.getLastName() != null) existing.setLastName(updatedUser.getLastName());
         if (updatedUser.getEmail() != null) existing.setEmail(updatedUser.getEmail());
-        if (updatedUser.getCourse() != null) existing.setCourse(updatedUser.getCourse());
-        if (updatedUser.getYearLevel() != null) existing.setYearLevel(updatedUser.getYearLevel());
-        if (updatedUser.getContactNumber() != null) existing.setContactNumber(updatedUser.getContactNumber());
 
         return ResponseEntity.ok(userService.updateUser(existing));
     }
@@ -48,16 +43,10 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PutMapping("/{id}/disable")
+    @PutMapping("/{id}/promote")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserEntity> disableUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.disableUser(id));
-    }
-
-    @PutMapping("/{id}/enable")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserEntity> enableUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.enableUser(id));
+    public ResponseEntity<UserEntity> promoteToAdmin(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.promoteToAdmin(id));
     }
 
     @DeleteMapping("/{id}")

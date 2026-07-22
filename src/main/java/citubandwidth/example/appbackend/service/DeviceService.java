@@ -29,7 +29,6 @@ public class DeviceService {
         device.setUserId(userId);
         device.setBrand(request.getBrand());
         device.setModel(request.getModel());
-        device.setMacAddress(request.getMacAddress());
 
         // First device: auto-approved, second device: pending
         if (deviceCount == 0) {
@@ -52,7 +51,6 @@ public class DeviceService {
                 .orElseThrow(() -> new RuntimeException("Device not found"));
         device.setBrand(request.getBrand());
         device.setModel(request.getModel());
-        device.setMacAddress(request.getMacAddress());
         return deviceRepository.save(device);
     }
 
